@@ -1,0 +1,9 @@
+{
+    "name":  "Scheduling List",
+    "image": "/images/ABCDLogo.jpg",
+    "script": "createList.sh",
+    "description": "Receive a list of participants that need to be scheduled. This list can be configured to contain the participants marked as <i>overdue</i> (inside the exception time window) and/or <i>due now</i> (inside the normal range).",
+    "parameter": {
+	    "Type": ["Overdue only", "Due now only", "Overdue and Due now"]		
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "name": "Weekly Event",
+    "image": "/images/ABCDLogo.jpg",
+    "script": "weekly.sh",
+    "description": "Start an action at a specific day of each week.",
+    "parameter": {
+	    "TimePoint": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    }
+}

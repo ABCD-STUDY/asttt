@@ -20,21 +20,15 @@
   // Assumption here is that a user can only add assessment for the first site he has permissions for!
   $site = "";
   foreach ($permissions as $per) {
-     $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
-
-     if (count($a) > 0) {
-        $site = $a[1];
-	break;
-     }
+      $a = explode("Site", $per); // permissions should be structured as "Site<site name>"
+      if (count($a) > 1) {
+          $site = $a[1];
+	      break;
+      }
   }
   if ($site == "") {
      echo (json_encode ( array( "message" => "Error: no site assigned to this user" ) ) );
      return;
-  }
-
-  // if there is a running session it would have the follow information
-  if( isset($_SESSION['ABCD']) && isset($_SESSION['ABCD']['asttt']) ) {
-     // we are logged in to a session for this application
   }
 
   echo('<script type="text/javascript"> site = "'.$site.'"; </script>'."\n");
@@ -51,7 +45,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>ABCD says this than that</title>
+  <title>ABCD apprise</title>
 
   <!-- Bootstrap Core CSS -->
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -80,7 +74,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">ABCD says this than that</a>
+      <a class="navbar-brand" href="#">ABCD apprise</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -111,32 +105,37 @@
       <div class="row start-page">
         <div class="col-md-12">
           <div class="date">Adolescent Brain Cognitive Development</div>
-	  <div style='position: relative;'>
-	    <h1>ABCD says this than that</h1>
-	    <div class='date2'>June 2016</div>
-	  </div>
-	  <p>Specify an ABCD event and link it with an action.</p>
-
-	  <p>&nbsp;</p>
+	      <div style='position: relative;'>
+	        <h1>ABCD apprise</h1>
+	        <div class='date2'>September 2018</div>
+	      </div>
+	      <p style="margin-bottom: 20px;">Specify a trigger and link it with an action. The action creates a report once the trigger activates. That report will be forwarded to your email address. If you want to receive the scheduling list with overdue and due now participants at the first day of each week select the "Scheduling List" action and the trigger "Weekly Event". Configure the trigger to select the day of the week. Emails are generated at mid-night. Remove the task to stop the emails.</p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-	  <p>Mine</p>
+	      <p>Active tasks (<span class="num-my-tasks">0</span>)</p>
           <div id="myevents"></div>
-	</div>
+	    </div>
       </div>
       <hr>
       <div class="row">
         <div class="col-md-12">
-	  <p>If this-ses and actions</p>
+	      <p>Create a new task (list of available actions and triggers)</p>
           <div id="events"></div>
-	</div>
+	    </div>
       </div>
       <div class="row">&nbsp;</div>
     </div>
   </section>
 
+  <section>
+    <div class="container">
+      <hr>
+      <i>A service provided by the Data Analysis and Informatics Group of ABCD.</i>
+    </div>
+  </section>
+  
 <div class="modal fade" tabindex="-1" role="dialog" id="edit-props">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -165,11 +164,11 @@
       </div>
       <div class="modal-body">
          <div class="form-group">
-	    <label for="#list-of-events">Select Event</label>
+	    <label for="#list-of-events">Select the trigger</label>
 	    <select class="form-control" id="list-of-events"></select>
 	 </div>
          <div class="form-group">
-	    <label for="#list-of-actions">Select Action</label>
+	    <label for="#list-of-actions">Select the action</label>
 	    <select class="form-control" id="list-of-actions"></select>   
 	 </div>
       </div>

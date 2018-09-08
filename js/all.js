@@ -29,10 +29,28 @@ function checkConnectionStatus() {
 function readEvents() {
     jQuery('#events').children().remove();
     jQuery('#myevents').children().remove();
+    jQuery('#apprise-table').children().remove();
+    jQuery('.email').text(email);
     
     // lets get the data and hope for the best
     jQuery.when( jQuery.getJSON('code/php/getLinks.php', function(data) {
 	    links = data;
+        // populate the table with actions used by users
+        line = "";
+        for (var i = 0; i < data.length; i++) {
+            if (data[i]['user'] == "admin")
+                continue;
+            if (typeof data[i]['sites'] === "undefined") {
+                data[i]['sites'] = [];
+            }
+            line = line + "<tr>"
+                + "<td>" + data[i]['sites'].join(", ") + "</td>"
+                + "<td>" + data[i]['user'] + "</td>"
+                + "<td>" + data[i]['event'] + "</td>"
+                + "<td>" + data[i]['action'] + "</td>"
+                + "</tr>";
+        }
+        jQuery('#apprise-table').append(line);
     }) ).then( function() {
 	    // links should exist now
 	    jQuery.getJSON('code/php/getEvents.php', function(data) {
@@ -63,11 +81,11 @@ function readEvents() {
                     numMyTasks++;
   		            str2 = str2 + "<div class=\"card mixed\" eventid=\""+id+"\">"
                         + "<div class='title'><button type=\"button\" class=\"close delete-active-task\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" + id + "</div>"
+			            + "<button class=\"close\" data-toggle=\"modal\" data-target=\"#edit-props\" type=\"action\" eventid=\""+id+"\" event=\""+ events[i].name +"\" parms='" + parms2 + "'><i class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></i></button>"			
+			            + "<div class=\"action-name\"> Action:<br><b>" + a.name + "</b></div>"
 			            + "<button class=\"close\" data-toggle=\"modal\" data-target=\"#edit-props\" type=\"event\" eventid=\""+id+"\" event=\""+ events[i].name +"\" parms='" + parms + "'><i class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></i></button>"
 			            + "<div class=\"event-name\"> Trigger:<br><b>" + events[i].name + "</b></div>"
 
-			            + "<button class=\"close\" data-toggle=\"modal\" data-target=\"#edit-props\" type=\"action\" eventid=\""+id+"\" event=\""+ events[i].name +"\" parms='" + parms2 + "'><i class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></i></button>"			
-			            + "<div class=\"action-name\"> Action:<br><b>" + a.name + "</b></div>"
                         + "<div class=\"site-list\"><i>Sites: " + sites.join(", ") + "</i></div>"
 			            + "</div>";
 		        }

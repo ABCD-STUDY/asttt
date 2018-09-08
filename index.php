@@ -4,6 +4,7 @@
   include($_SERVER["DOCUMENT_ROOT"]."/code/php/AC.php");
   $user_name = check_logged(); /// function checks if visitor is logged in
   $admin = false;
+  $email = getEmailFromUserName($user_name);
 
   if ($user_name == "") {
     // user is not logged in
@@ -12,6 +13,7 @@
     $admin = true;
     echo('<script type="text/javascript"> user_name = "'.$user_name.'"; </script>'."\n");
     echo('<script type="text/javascript"> admin = '.($admin?"true":"false").'; </script>'."\n");
+    echo('<script type="text/javascript"> email = "'.$email.'"; </script>'."\n");
   }
   
   $permissions = list_permissions_for_user( $user_name );
@@ -80,7 +82,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/index.php" title="Back to report page">Report</a></li>
+        <li><a href="/index.php" title="Back to report page">Report</a></li>
+        <li type="button" data-toggle="modal" data-target="#list-apprises"><a>Overview</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#" class="connection-status" id="connection-status">Connection Status</a></li>
@@ -106,22 +109,23 @@
         <div class="col-md-12">
           <div class="date">Adolescent Brain Cognitive Development</div>
 	      <div style='position: relative;'>
-	        <h1>ABCD apprise</h1>
+	        <h1>ABCD apprise - sign up for emails</h1>
 	        <div class='date2'>September 2018</div>
 	      </div>
-	      <p style="margin-bottom: 20px;">Specify a trigger and link it with an action. The action creates a report once the trigger activates. That report will be forwarded to your email address. If you want to receive the scheduling list with overdue and due now participants at the first day of each week select the "Scheduling List" action and the trigger "Weekly Event". Configure the trigger to select the day of the week. Emails are generated at mid-night. Remove the task to stop the emails.</p>
+	      <p style="margin-bottom: 20px;">
+To create a new task, click the "+" in the upper-right corner of the available actions and triggers. Select the action you would like to receive a report for and the frequency for which you like to receive this report. You can configure the settings to select the time of day, day of the week, and time of the month. The report will be forwarded to your email address (<span class="email"></span>). To stop the emails, remove the task from the "Active task list" by clicking "x" in the upper-right corner.</p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-	      <p>Active tasks (<span class="num-my-tasks">0</span>)</p>
+	      <p>Active task list (<span class="num-my-tasks">0</span>)</p>
           <div id="myevents"></div>
 	    </div>
       </div>
       <hr>
       <div class="row">
         <div class="col-md-12">
-	      <p>Create a new task (list of available actions and triggers)</p>
+	      <p>To create a new task select from this list of available actions and triggers.</p>
           <div id="events"></div>
 	    </div>
       </div>
@@ -130,11 +134,35 @@
   </section>
 
   <section>
-    <div class="container">
+    <div class="container" style="margin-bottom: 20px;">
       <hr>
       <i>A service provided by the Data Analysis and Informatics Group of ABCD.</i>
     </div>
   </section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="list-apprises">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<h4 class="modal-title">What other people are using</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr><th>Site</th><th>User</th><th>Trigger</th><th>Action</th></tr>
+          </thead>
+          <tbody id="apprise-table"></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
   
 <div class="modal fade" tabindex="-1" role="dialog" id="edit-props">
   <div class="modal-dialog">

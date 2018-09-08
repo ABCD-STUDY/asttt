@@ -44,22 +44,44 @@ usort($output_due_now, "cmp");
 
 
 $temp = array();
-foreach($output_overdue as $row){
+foreach($output_overdue as $index =>  $row){
+    $style = "";
+    if($index % 2 == 1) $style = "background-color: #f2f2f2;";
     $p = $row[0];
     $s = $row[2];
     $stat = $row[1];
     $e = $row[3];
-    $temp[] ="<tr><td>".$p."</td><td>".$e."</td><td>".$stat."</td><td>".$s."</td><td>Overdue</td><td> "."<a href = 'https://abcd-rc.ucsd.edu/redcap/redcap_v8.7.0/DataEntry/index.php?pid=12&id=".$p."&event_id=40&page=scheduled'> Link to REDCap</a></td></tr>";
+    $e_id = 40;
+    if($e == "1_year_follow_up_y_arm_1"){ 
+      $e_id = 41;
+    }else if($e == "2_year_follow_up_y_arm_1"){ 
+      $e_id = 50;
+    }else{
+      $temp[] = "<tr style = '".$style."'><td>".$p."</td><td>".$e."</td><td>".$stat."</td><td>".$s."</td><td>Overdue</td><td> "."<a href = 'https://abcd-rc.ucsd.edu/redcap/redcap_v8.7.0/DataEntry/record_home.php?pid=12&arm=1&id=".$p."'> Link to REDCap</a></td></tr>";
+      continue;
+    }
+    $temp[] ="<tr style = '".$style."'><td>".$p."</td><td>".$e."</td><td>".$stat."</td><td>".$s."</td><td>Overdue</td><td> "."<a href = 'https://abcd-rc.ucsd.edu/redcap/redcap_v8.7.0/DataEntry/index.php?pid=12&id=".$p."&event_id=".$e_id."&page=scheduled'> Link to REDCap</a></td></tr>";
 }
 $output_overdue = $temp;
 
 $temp = array();
-foreach($output_due_now as $row){
+foreach($output_due_now as $index => $row){
+    $style = "";
+    if($index % 2 == 1) $style = "background-color: #f2f2f2;";
     $p = $row[0];
     $s = $row[2];
     $stat = $row[1];
     $e = $row[3];
-    $temp[] = "<tr><td>".$p."</td><td>".$e."</td><td>".$stat."</td><td>".$s."</td><td>Due Now</td><td> "."<a href = 'https://abcd-rc.ucsd.edu/redcap/redcap_v8.7.0/DataEntry/index.php?pid=12&id=".$p."&event_id=40&page=scheduled'> Link to REDCap</a></td></tr>";
+    $e_id = 40;
+    if($e == "1_year_follow_up_y_arm_1"){ 
+      $e_id = 41;
+    }else if($e == "2_year_follow_up_y_arm_1"){ 
+      $e_id = 50;
+    }else{
+      $temp[] = "<tr style = '".$style."'><td>".$p."</td><td>".$e."</td><td>".$stat."</td><td>".$s."</td><td>Due Now</td><td> "."<a href = 'https://abcd-rc.ucsd.edu/redcap/redcap_v8.7.0/DataEntry/record_home.php?pid=12&arm=1&id=".$p."'> Link to REDCap</a></td></tr>";
+      continue;
+    }
+    $temp[] = "<tr style = '".$style."'><td>".$p."</td><td>".$e."</td><td>".$stat."</td><td>".$s."</td><td>Due Now</td><td> "."<a href = 'https://abcd-rc.ucsd.edu/redcap/redcap_v8.7.0/DataEntry/index.php?pid=12&id=".$p."&event_id=".$e_id."&page=scheduled'> Link to REDCap</a></td></tr>";
 }
 $output_due_now = $temp;
 

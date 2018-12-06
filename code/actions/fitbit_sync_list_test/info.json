@@ -1,0 +1,9 @@
+{
+    "name":  "Fitbit sync errors (experimental)",
+    "image": "/images/ABCDLogo.jpg",
+    "script": "fitabase_sync_list.py",
+    "description": "DO NOT SELECT",
+    "parameter": {
+    },
+    "user_restriction": [ "simon" ]
+}

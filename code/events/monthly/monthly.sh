@@ -24,7 +24,7 @@ if ($default == "0") {
     $day = $dat->format('d');
 }
 $now = new DateTime();
-$daytoday = $now->format('d');
+$daytoday = $now->format('j');
 $perform = false;
 if ($daytoday == $day) {
     $perform = true;
@@ -32,6 +32,7 @@ if ($daytoday == $day) {
 #echo("days: ".$daytoday. " " . $day);
 $user=$data['user'];
 
+echo("dayofmonth: ".$daytoday. " " . $default);
 # what is the key for this event?
 $key=$user."_".date('Y-M')."_".$default."_".$data['id'];
 # if this key is new run the action, if we had this already don't run

@@ -1,7 +1,7 @@
 {
     "name": "Monthly Event",
     "image": "/images/ABCDLogo.jpg",
-    "description": "Start an action at the beginning the middle or the end of each month.",
+    "description": "Start an action at the beginning, the middle, or the end of each month.",
     "script": "monthly.sh",
     "parameter": {
 	    "TimePoint": ["1st of the month", "mid of the month", "end of the month"]

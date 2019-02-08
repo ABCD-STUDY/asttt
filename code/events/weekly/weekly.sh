@@ -16,7 +16,7 @@ if (count($data['event_param']) > 0) {
    }
 }
 $now = new DateTime();
-$dayofweek = $now->format('l');
+$dayofweek = $now->format('w');
 $perform = false;
 if ($dayofweek == $daylist[$default]) {
     $perform = true;

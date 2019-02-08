@@ -35,6 +35,13 @@ function readEvents() {
     // lets get the data and hope for the best
     jQuery.when( jQuery.getJSON('code/php/getLinks.php', function(data) {
 	    links = data;
+        // sort the data by site
+        links.sort(function(a,b) {
+            if (a['sites'][0] < b['sites'][0])
+                return -1;
+            return 1;
+        });
+        
         // populate the table with actions used by users
         line = "";
         for (var i = 0; i < data.length; i++) {
@@ -81,12 +88,12 @@ function readEvents() {
                     numMyTasks++;
   		            str2 = str2 + "<div class=\"card mixed\" eventid=\""+id+"\">"
                         + "<div class='title'><button type=\"button\" class=\"close delete-active-task\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" + id + "</div>"
-			            + "<button class=\"close\" data-toggle=\"modal\" data-target=\"#edit-props\" type=\"action\" eventid=\""+id+"\" event=\""+ events[i].name +"\" parms='" + parms2 + "'><i class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></i></button>"			
+			            + "<button class=\"close\" data-toggle=\"modal\" data-target=\"#edit-props\" type=\"action\" eventid=\""+id+"\" event=\""+ a.name +"\" parms='" + parms2 + "'><i class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></i></button>"			
 			            + "<div class=\"action-name\"> Action:<br><b>" + a.name + "</b></div>"
 			            + "<button class=\"close\" data-toggle=\"modal\" data-target=\"#edit-props\" type=\"event\" eventid=\""+id+"\" event=\""+ events[i].name +"\" parms='" + parms + "'><i class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"></i></button>"
 			            + "<div class=\"event-name\"> Trigger:<br><b>" + events[i].name + "</b></div>"
 
-                        + "<div class=\"site-list\"><i>Sites: " + sites.join(", ") + "</i></div>"
+                        + "<div class=\"site-list\"><i>Your report will contain information for the following site" + ((sites.length>1)?"s":"") +": " + sites.join(", ") + "</i></div>"
 			            + "</div>";
 		        }
   		        str = str + "<div class=\"card2 event\" parms=\"" + parms + "\">"
@@ -101,6 +108,13 @@ function readEvents() {
 	        
 	        str  = "";
 	        for (var i = 0; i < actions.length; i++) {
+                // only show actions that do not have a user restriction
+                if (typeof actions[i]['user_restriction'] !== 'undefined') {
+                    if (actions[i]['user_restriction'].indexOf(user_name) == -1) {
+                        continue;
+                    }
+                }
+                
 		        parms = JSON.stringify(actions[i].parameter); // Object.keys(actions[i].parameter).map(function(value, index) { return value + ":" + actions[i].parameter[value]; });
 		        str = str + "<div class=\"card2 action\" parms='" + parms + "'>"
 		        //+ "<button class=\"btn pull-right\" data-toggle=\"modal\" data-target=\"#edit-props\" event=\""+ data[i].name +"\"><span class=\"glyphicon glyphicon-cog\" aria-hidden=\"true\"> </span></button>"
@@ -193,7 +207,23 @@ jQuery(document).ready(function() {
 	    var eventOrAction = button.attr('type');
 	    var evName        = button.attr('event');
 	    var id            = button.attr('eventid'); // in the users list what event are we talking about
+        var description   = "";
+        if (eventOrAction == 'event') {
+            for (var i = 0; i < events.length; i++) {
+                if (events[i]['name'] == evName) {
+                    description = events[i]['description'];
+                }
+            }
+        } else {
+            for (var i = 0; i < actions.length; i++) {
+                if (actions[i]['name'] == evName) {
+                    description = actions[i]['description'];
+                }
+            }
+        }
 	    jQuery('#param-title').html(evName + " <span>[" + button.attr('type') + "]</span>");
+        jQuery('#param-description').html(description);
+        
 	    
 	    // we should get a list of parameters from the event first, afterwards we fill in the defaults
 	    var eve = {};
@@ -272,6 +302,7 @@ jQuery(document).ready(function() {
                     jQuery(select).append("<option value='" + j + "' placeholder='" + a[0] + "'" + sel + ">" + a[1][j] + "</option>");
                 }
                 var div = jQuery("<div class=\"form-group\"></div>");
+                jQuery(div).append("<label>" + a[0] + "</label>");
                 jQuery(div).append(select);
 	            jQuery('#param-options').append(div);
                 // now set the value for the option
@@ -279,7 +310,7 @@ jQuery(document).ready(function() {
                 
                 // "<div class=\"form-group\"><select class=\"form-control\" type=\""+ a[1] +"\" placeholder=\"" + a[0] + "\" value=\""+valForPar+"\"></select></div>");
             } else {
-	            jQuery('#param-options').append("<div class=\"form-group\"><input class=\"form-control\" type=\""+ a[1] +"\" placeholder=\"" + a[0] + "\" value=\""+valForPar+"\"></div>");
+	            jQuery('#param-options').append("<div class=\"form-group\"><label>" + a[0] + "</label><input class=\"form-control\" type=\""+ a[1] +"\" placeholder=\"" + a[0] + "\" value=\""+valForPar+"\"></div>");
             }
 	    }
     });

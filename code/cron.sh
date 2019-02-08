@@ -19,23 +19,23 @@ while IFS= read -r line ; do
             # echo "trigger is defined in ${line2}/info.json, call script \"${script}\" with ${line}"
             ret=`eval "${script} '${line}'"`
             if [ "$?" -eq "1" ]; then
-                echo "action will be performed"
+                #echo "action will be performed"
                 # what action?
                 while IFS= read -r line3 ; do
                     name=`cat ${line3}/info.json | jq -r ".name"`
                     if [ "$name" == "$action" ]; then
                         script2=${line3}/`cat ${line3}/info.json | jq -r ".script"`
                         echo "`date`: action is defined in ${line3}/info.json, call script \"${script2}\" with ${line}"
-                        ret2=`eval "${script2} '${line}'"`
+                        ret2=`eval "${script2} '${line}'" 2>> ${script2}_log`
                         echo "${ret2}"
                         # The output ret2 should now be send as an email to the current user
                         echo ${ret2} | ./sendAsEmail.sh "${user}" "${action} (${id})" -
                     fi
                 done <<< "$actions"
             else
-                echo "action should not be done"
+                echo "action should not be done for trigger (${script}): $ret"
             fi
-            echo "trigger returned: $ret"
+            #echo "trigger returned: $ret"
         fi
     done <<< "$triggers"
 done <<< "$data"

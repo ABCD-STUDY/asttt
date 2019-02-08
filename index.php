@@ -145,9 +145,9 @@ To create a new task, click the "+" in the upper-right corner of the available a
     <div class="modal-content">
       <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<h4 class="modal-title">What other people are using</h4>
+	<h4 class="modal-title">Registered actions (by site and user)</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr><th>Site</th><th>User</th><th>Trigger</th><th>Action</th></tr>
@@ -169,10 +169,11 @@ To create a new task, click the "+" in the upper-right corner of the available a
     <div class="modal-content">
       <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<h4 class="modal-title">Edit Event Properties</h4>
+	<h4 class="modal-title">Edit Properties</h4>
       </div>
       <div class="modal-body">
-         <H3 id="param-title"></H3>
+        <H3 id="param-title"></H3>
+        <div id="param-description"></div>
          <div id="param-options"></div>
       </div>
       <div class="modal-footer">

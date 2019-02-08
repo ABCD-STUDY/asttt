@@ -7,7 +7,7 @@ if (count($argv) != 4) {
 }
 
 // get the email for this user
-$pw = json_decode(file_get_contents("/var/www/html/code/php/passwords.json"),true);
+$pw = json_decode(file_get_contents("/var/www/secure/passwords.json"),true);
 $email = "";
 foreach($pw['users'] as $user) {
     # echo("check if \"".$user['name']."\" is equal to \"".$argv[1]."\" \n");
